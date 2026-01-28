@@ -1,23 +1,31 @@
+import { Header } from '@/components/layout/Header'
+import { ExchangeSelector } from '@/components/exchange/ExchangeSelector'
+import { FilterPanel } from '@/components/filters/FilterPanel'
+import { ResultsTable } from '@/components/results/ResultsTable'
+
 function App() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">TradingView Watchlist Generator</h1>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            GitHub
-          </a>
+      <Header />
+
+      <main className="container mx-auto px-4 py-6">
+        {/* Exchange Selector */}
+        <div className="mb-6">
+          <ExchangeSelector />
         </div>
-      </header>
-      <main className="container mx-auto px-4 py-8">
-        <p className="text-muted-foreground">
-          Fetch trading pairs from MEXC and Hyperliquid, apply filters, and export for TradingView.
-        </p>
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Filter Panel */}
+          <div className="lg:col-span-1">
+            <FilterPanel />
+          </div>
+
+          {/* Results Table */}
+          <div className="lg:col-span-3">
+            <ResultsTable />
+          </div>
+        </div>
       </main>
     </div>
   )

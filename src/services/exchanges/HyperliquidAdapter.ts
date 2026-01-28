@@ -5,6 +5,7 @@ import type {
   HyperliquidMeta,
   HyperliquidAssetCtx,
 } from './types'
+import { postJsonWithProxy } from '@/utils/fetch'
 
 export class HyperliquidAdapter implements ExchangeAdapter {
   metadata: ExchangeMetadata = {
@@ -24,17 +25,10 @@ export class HyperliquidAdapter implements ExchangeAdapter {
   }
 
   async fetchFuturesPairs(): Promise<TradingPair[]> {
-    const response = await fetch(this.apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'metaAndAssetCtxs' }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Hyperliquid API error: ${response.status}`)
-    }
-
-    const [meta, assetCtxs]: [HyperliquidMeta, HyperliquidAssetCtx[]] = await response.json()
+    const [meta, assetCtxs] = await postJsonWithProxy<[HyperliquidMeta, HyperliquidAssetCtx[]]>(
+      this.apiUrl,
+      { type: 'metaAndAssetCtxs' }
+    )
 
     return meta.universe
       .filter((coin) => !coin.isDelisted)

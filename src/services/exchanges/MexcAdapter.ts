@@ -5,6 +5,7 @@ import type {
   MexcSpotTicker,
   MexcFuturesResponse,
 } from './types'
+import { fetchJsonWithProxy } from '@/utils/fetch'
 
 const QUOTE_CURRENCIES = ['USDT', 'USDC', 'BUSD', 'BTC', 'ETH', 'EUR', 'TRY', 'BRL']
 
@@ -22,11 +23,7 @@ export class MexcAdapter implements ExchangeAdapter {
   private futuresApiUrl = 'https://contract.mexc.com/api/v1/contract/ticker'
 
   async fetchSpotPairs(): Promise<TradingPair[]> {
-    const response = await fetch(this.spotApiUrl)
-    if (!response.ok) {
-      throw new Error(`MEXC Spot API error: ${response.status}`)
-    }
-    const data: MexcSpotTicker[] = await response.json()
+    const data = await fetchJsonWithProxy<MexcSpotTicker[]>(this.spotApiUrl)
 
     return data
       .filter((ticker) => this.isUsdtPair(ticker.symbol))
@@ -61,11 +58,7 @@ export class MexcAdapter implements ExchangeAdapter {
   }
 
   async fetchFuturesPairs(): Promise<TradingPair[]> {
-    const response = await fetch(this.futuresApiUrl)
-    if (!response.ok) {
-      throw new Error(`MEXC Futures API error: ${response.status}`)
-    }
-    const data: MexcFuturesResponse = await response.json()
+    const data = await fetchJsonWithProxy<MexcFuturesResponse>(this.futuresApiUrl)
 
     if (!data.success) {
       throw new Error('MEXC Futures API returned unsuccessful response')

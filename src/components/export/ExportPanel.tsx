@@ -15,7 +15,6 @@ export function ExportPanel() {
   const [copied, setCopied] = useState(false)
 
   const pairs = getFilteredPairs()
-  const tvSupportedPairs = pairs.filter((p) => p.tvSupported)
   const unsupportedPairs = pairs.filter((p) => !p.tvSupported)
   const tvWatchlist = formatForTradingView(pairs)
 
@@ -30,7 +29,7 @@ export function ExportPanel() {
   const handleExportTxt = () => {
     exportWatchlist(pairs, {
       format: 'txt',
-      tvSupportedOnly: true,
+      tvSupportedOnly: false,
     })
   }
 
@@ -51,7 +50,7 @@ export function ExportPanel() {
       <CardHeader className="pb-4">
         <CardTitle className="text-lg flex items-center gap-2">
           Export
-          <Badge variant="secondary">{tvSupportedPairs.length} pairs</Badge>
+          <Badge variant="secondary">{pairs.length} pairs</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -61,10 +60,10 @@ export function ExportPanel() {
             <AlertTriangle className="h-5 w-5 text-yellow-500 shrink-0 mt-0.5" />
             <div className="text-sm">
               <p className="font-medium text-yellow-600">
-                {unsupportedPairs.length} pairs not supported on TradingView
+                {unsupportedPairs.length} pairs from DEX exchanges
               </p>
               <p className="text-muted-foreground">
-                Hyperliquid pairs will be excluded from TradingView export but included in JSON.
+                DEX pairs (Hyperliquid, dYdX, Aster, ApeX) may not work on TradingView but are included in exports.
               </p>
             </div>
           </div>
@@ -79,7 +78,7 @@ export function ExportPanel() {
             <pre className="p-3 bg-muted rounded-md text-xs overflow-x-auto max-h-32 text-foreground">
               {tvWatchlist.length > 500
                 ? `${tvWatchlist.slice(0, 500)}...`
-                : tvWatchlist || 'No TV-supported pairs to export'}
+                : tvWatchlist || 'No pairs to export'}
             </pre>
           </div>
         </div>
@@ -89,7 +88,7 @@ export function ExportPanel() {
           <Button
             onClick={handleCopy}
             variant="outline"
-            disabled={tvSupportedPairs.length === 0}
+            disabled={pairs.length === 0}
             className="flex-1"
           >
             {copied ? (
@@ -108,7 +107,7 @@ export function ExportPanel() {
           <Button
             onClick={handleExportTxt}
             variant="outline"
-            disabled={tvSupportedPairs.length === 0}
+            disabled={pairs.length === 0}
           >
             <FileText className="h-4 w-4 mr-2" />
             Download TXT

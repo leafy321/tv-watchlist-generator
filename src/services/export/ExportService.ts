@@ -11,11 +11,11 @@ export interface ExportOptions {
 
 /**
  * Format pairs for TradingView watchlist export
- * Returns comma-separated TV symbols
+ * Returns comma-separated TV symbols (includes all pairs with tvSymbol)
  */
 export function formatForTradingView(pairs: TradingPair[]): string {
   return pairs
-    .filter((pair) => pair.tvSupported && pair.tvSymbol)
+    .filter((pair) => pair.tvSymbol)
     .map((pair) => pair.tvSymbol)
     .join(',')
 }

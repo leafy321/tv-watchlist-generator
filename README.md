@@ -37,7 +37,7 @@ A web application to fetch trading pairs from multiple cryptocurrency exchanges,
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/tv-watchlist-generator.git
+git clone https://github.com/leafy321/tv-watchlist-generator.git
 cd tv-watchlist-generator
 ```
 
